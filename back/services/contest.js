@@ -1,19 +1,21 @@
-const db = require(../libraries/mysql)
-
+const db = require('../libraries/mysql');
 class ContestService {
   constructor(){
     this.table = 'contests'
+    return this.table
   }
-  createContest(Idadmin,{ name, category, place, address, startDate, endDate, online }) {
+  createContest( idadmin, { name, image, url, start_date, end_date, description }) {
+        console.log("test3");
         return new Promise(async (resolve, reject) => {
             try {
-                const connection = await mysql.connect();
-                let query = `INSERT INTO ${this.table} (name, category, place, address, start_date, end_date, online, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
-                connection.query(query, [name, category, place, address ? address : null, startDate, endDate, Number(online), userId], (err, results, fields) => {
+                const connection = await db.connect();
+                let query = `INSERT INTO ${this.table} (name, image, url, start_date, end_date, description, administrator_id) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+                connection.query(query, [name, image, url, start_date, end_date, description, idadmin], (err, results, fields) => {
                     if (err) {
                         console.log(err);
                         return reject(err);
                     } else {
+                        console.log(results);
                         if (results.insertId) {
                             resolve(results.insertId);
                         } else {
@@ -31,3 +33,4 @@ class ContestService {
 
 
 }
+module.exports = ContestService;
